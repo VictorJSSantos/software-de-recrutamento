@@ -1,18 +1,28 @@
-# our files
-*.csv
-*.json
+# Arquivos de configuração locais
+*.env
+*.local
 
+# Modelos e Arquivos pesados
+*.json
+*.h5
+*.pkl
+*.npy
+*.csv
+*.db
+*.sqlite3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
+*.pyc
+*.pyo
+*.pyd
 
 # C extensions
 *.so
 
-# Distribution / packaging
-.Python
+# Distribution / packaging / Arquivos de build
 build/
 develop-eggs/
 dist/
@@ -210,3 +220,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# VSCode e outros editores
+.vscode/
+.idea/
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
