@@ -82,6 +82,7 @@ Acesse a documentação automática da API:
 
 
 ## Rodando com Docker
+
 Build da imagem:
     docker build -t decision-api .
     ou
@@ -95,30 +96,33 @@ Executar a API:
 ## Endpoint de Previsão
 POST /predict
 
-Exemplo da requisição:
-    {
-    "nivel_academico": "Superior Completo",
-    "nivel_ingles": "Avançado",
-    "nivel_espanhol": "Intermediário",
-    "area_atuacao": "Desenvolvimento",
-    "cv": "Profissional com 5 anos de experiência em Java, Spring Boot, e metodologias ágeis...",
-    "descricao_vaga": "Buscamos dev com experiência em Java, APIs REST e conhecimento em cloud."
-    }
+    Exemplo da requisição:
+        {
+        "nivel_academico": "Superior Completo",
+        "nivel_ingles": "Avançado",
+        "nivel_espanhol": "Intermediário",
+        "area_atuacao": "Desenvolvimento",
+        "cv": "Profissional com 5 anos de experiência em Java, Spring Boot, e metodologias ágeis...",
+        "descricao_vaga": "Buscamos dev com experiência em Java, APIs REST e conhecimento em cloud."
+        }
 
 
-Resposta:
-    {
-    "match": true,
-    "score": 0.87
-    }
+    Resposta:
+        {
+        "match": true,
+        "score": 0.87
+        }
 
 
 ## Próximos passos e pendente:
 _ Monitoramento e performance do modelo
+
 _ registro dos logs com grafana
 
 
-Autores
+## Autores:
 Tatiana M. Haddad – @TatiHaddad
+
 Victor Santos - @VictorJSSantos
+
 Felipe Bizarria - @felipebizarria
