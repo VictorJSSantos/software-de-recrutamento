@@ -17,38 +17,38 @@ Esta aplicação implementa uma pipeline completa de Machine Learning para preve
 
 ##  Estrutura do Projeto
 
-
-software-de-recrutamento/
-├── app/
-│   ├── main.py              # FastAPI com endpoint /predict
-│   ├── model.py             # Carregamento e inferência do modelo
-│   ├── schema.py            # Pydantic: validação da entrada e saída da API
-│
-├── pipeline/
-│   ├── preprocessing.py     # Limpeza, encoding, TF-IDF
-│   ├── feature_engineering.py # Similaridade, experiência, etc.
-│
-├── notebooks/
-│   ├── eda.ipynb            # Análise exploratória dos dados
-│
-├── model/
-│   ├── model.joblib         # Modelo treinado
-│
-├── tests/
-│   ├── test_preprocessing.py
-│   ├── test_feature_engineering.py
-│
-├── data/
-│   ├── applicants.json
-│   ├── vagas.json
-│   ├── prospects.json
-│
-├── train_model.py           # Script de treinamento
-├── requirements.txt         # Dependências
-├── Dockerfile               # Empacotamento Docker
-├── .dockerignore
-└── README.md                # Este arquivo
-
+    
+    software-de-recrutamento/
+    ├── app/
+    │   ├── main.py              # FastAPI com endpoint /predict
+    │   ├── model.py             # Carregamento e inferência do modelo
+    │   ├── schema.py            # Pydantic: validação da entrada e saída da API
+    │
+    ├── pipeline/
+    │   ├── preprocessing.py     # Limpeza, encoding, TF-IDF
+    │   ├── feature_engineering.py # Similaridade, experiência, etc.
+    │
+    ├── notebooks/
+    │   ├── eda.ipynb            # Análise exploratória dos dados
+    │
+    ├── model/
+    │   ├── model.joblib         # Modelo treinado
+    │
+    ├── tests/
+    │   ├── test_preprocessing.py
+    │   ├── test_feature_engineering.py
+    │
+    ├── data/
+    │   ├── applicants.json
+    │   ├── vagas.json
+    │   ├── prospects.json
+    │
+    ├── train_model.py           # Script de treinamento
+    ├── requirements.txt         # Dependências
+    ├── Dockerfile               # Empacotamento Docker
+    ├── .dockerignore
+    └── README.md                # Este arquivo
+    
 
 
 ## Requisitos:
