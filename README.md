@@ -1,49 +1,124 @@
-Objetivo do Projeto:
-Desenvolver uma solução de IA para melhorar o processo de recrutamento e seleção da empresa Decision.
+# Decision AI Recruiter
 
-A Decision é especializada em serviços de bodyshop e recrutamento, com 
-foco em conectar talentos qualificados às necessidades específicas dos clientes. 
-A Decision atua principalmente no setor de TI, em que a agilidade e a precisão 
-no “match” entre candidatos(as) e vagas são diferenciais essenciais. O objetivo 
-da empresa é entregar profissionais que não apenas atendam aos requisitos 
-técnicos, mas também se alinhem à cultura e aos valores das empresas 
-contratantes.  
-
-Foco para solução do problema da empresa:  Sistema de Recomendação e Classificação de Engajamento
-_Otimizar o match entre os candidatos e as vagas
-_Garantir o fit técnico e cultural
-_Identificar engajamento/motivação
+Solução de Inteligência Artificial para recrutamento e seleção, desenvolvida para o Datathon, Projeto da Pós de Engenharia de Machine Learning - Grupo 41, para a empresa **Decision**, com foco em automatizar e otimizar o processo de *match* entre candidatos(as) e vagas.
 
 
-Análise Exploratória de Dados (EDA)
-FOi feita análise nas 3 bases que estão no diretório:
-software-de-recrutamento/data/applicants.json
-software-de-recrutamento/data/vagas.json
-software-de-recrutamento/data/prospects.json
+Esta aplicação implementa uma pipeline completa de Machine Learning para prever se um(a) candidato(a) tem perfil para ser contratado em uma vaga da Decision. Ela inclui:
 
-Etapas:
-1) EDA
-    1.1) Importação e Carregamento
-    1.2) Avaliação Estrutura e tipos
-    1.3) Distribuição das variáveis:
-        níveis academico x idiomas
-        áreas de atuação x título profissionais
-    1.4) Avaliação dados das vagas
-    1.5) Distribuição das variáveis:
-        contratado x não contratado
-
-2) Pré Processamento e Feature Engineering
-    2.1) Limpeza e tratamento dos dados ausentes
-    2.2) Codificação das variáveis categóricas 
-        _ OneHot
-        _ Embeddings
-    2.3) Transformação do texto com TF-IDF
-    2.4) Feature Engineering:
-        _ Última Experiência na área
-        _ Similaridade job description
-        _ Tempo Médio de resposta
-        _ Participações em entrevista
-        _ Linguagem Técnica
+-  Análise exploratória dos dados (EDA)
+-  Pipeline de pré-processamento e engenharia de atributos
+-  Modelo preditivo com Random Forest
+-  API REST com FastAPI para inferência
+-  Empacotamento com Docker
+-  Testes unitários
+-  Monitoramento com logging estruturado
 
 
 
+##  Estrutura do Projeto
+
+
+software-de-recrutamento/
+├── app/
+│   ├── main.py              # FastAPI com endpoint /predict
+│   ├── model.py             # Carregamento e inferência do modelo
+│   ├── schema.py            # Pydantic: validação da entrada e saída da API
+│
+├── pipeline/
+│   ├── preprocessing.py     # Limpeza, encoding, TF-IDF
+│   ├── feature_engineering.py # Similaridade, experiência, etc.
+│
+├── notebooks/
+│   ├── eda.ipynb            # Análise exploratória dos dados
+│
+├── model/
+│   ├── model.joblib         # Modelo treinado
+│
+├── tests/
+│   ├── test_preprocessing.py
+│   ├── test_feature_engineering.py
+│
+├── data/
+│   ├── applicants.json
+│   ├── vagas.json
+│   ├── prospects.json
+│
+├── train_model.py           # Script de treinamento
+├── requirements.txt         # Dependências
+├── Dockerfile               # Empacotamento Docker
+├── .dockerignore
+└── README.md                # Este arquivo
+
+
+
+## Requisitos:
+    Python 3.12
+    FastAPI
+    scikit-learn
+    pandas
+    numpy
+    joblib
+    Docker
+
+Instale as dependências com:
+    pip install -r requirements.txt
+
+
+## Como Treinar o Modelo:
+    python train_model.py
+O modelo será salvo em model/model.joblib
+
+
+## Rodando os Testes:
+    pytest tests/
+
+
+## Rodando a API (local):
+uvicorn app.main:app --reload
+
+Acesse a documentação automática da API:
+    Swagger UI: http://localhost:8000/docs
+    Redoc: http://localhost:8000/redoc
+
+
+## Rodando com Docker
+Build da imagem:
+    docker build -t decision-api .
+    ou
+    docker build --progress=plain -t decision-api .
+
+
+Executar a API:
+    docker run --rm -p 8000:8000 decision-api
+
+
+## Endpoint de Previsão
+POST /predict
+
+Exemplo da requisição:
+    {
+    "nivel_academico": "Superior Completo",
+    "nivel_ingles": "Avançado",
+    "nivel_espanhol": "Intermediário",
+    "area_atuacao": "Desenvolvimento",
+    "cv": "Profissional com 5 anos de experiência em Java, Spring Boot, e metodologias ágeis...",
+    "descricao_vaga": "Buscamos dev com experiência em Java, APIs REST e conhecimento em cloud."
+    }
+
+
+Resposta:
+    {
+    "match": true,
+    "score": 0.87
+    }
+
+
+## Próximos passos e pendente:
+_ Monitoramento e performance do modelo
+_ registro dos logs com grafana
+
+
+Autores
+Tatiana M. Haddad – @TatiHaddad
+Victor Santos - @VictorJSSantos
+Felipe Bizarria - @felipebizarria

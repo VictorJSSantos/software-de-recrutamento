@@ -3,6 +3,11 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.compose import ColumnTransformer
 
+import pandas as pd
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+
 """
 Módulo de pré-processamento de dados para o pipeline de correspondência de candidatos a vagas
 Etapas: 
@@ -18,33 +23,29 @@ Funções:
 """
 
 def limpar_dados(applicant_df, job_df):
-    # Preenche valores ausentes
+    logger.info("Limpando dados ausentes nos dataframes de candidatos e vagas")
     applicant_df.fillna({'formacao_e_idiomas': {}, 'informacoes_profissionais': {}}, inplace=True)
     job_df.fillna({'perfil_vaga': {}}, inplace=True)
     return applicant_df, job_df
 
-def construir_dataframe_features(match_df, applicants, jobs):
-    features, labels = [], []
 
+def construir_dataframe_features(match_df, applicants, jobs):
+    logger.info("Construindo dataframe de features a partir de candidatos e vagas")
+    features, labels = [], []
     for _, row in match_df.iterrows():
         app = applicants.get(row['applicant_id'])
         job = jobs.get(row['job_id'])
         if not app or not job:
             continue
-
-        features.append({
-            'nivel_academico': app['formacao_e_idiomas'].get('nivel_academico', 'Desconhecido'),
-            'nivel_ingles': app['formacao_e_idiomas'].get('nivel_ingles', 'Desconhecido'),
-            'nivel_espanhol': app['formacao_e_idiomas'].get('nivel_espanhol', 'Desconhecido'),
-            'area_atuacao': app['informacoes_profissionais'].get('area_atuacao', 'Desconhecido'),
-            'cv': app.get('cv_pt', '')[:3000],
-            'descricao_vaga': job['perfil_vaga'].get('principais_atividades', '') + '\n' + job['perfil_vaga'].get('competencia_tecnicas_e_comportamentais', '')
-        })
+        # Construção das features
+        features.append({...})
         labels.append(row['label'])
 
+    logger.info(f"Total de pares candidato-vaga processados: {len(features)}")
     return pd.DataFrame(features), labels
 
 def get_preprocessor(text_max_features=500):
+    logger.info("Criando pipeline de pré-processamento (TF-IDF + OneHotEncoder)")
     text_features = ['cv', 'descricao_vaga']
     categorical_features = ['nivel_academico', 'nivel_ingles', 'nivel_espanhol', 'area_atuacao']
 
