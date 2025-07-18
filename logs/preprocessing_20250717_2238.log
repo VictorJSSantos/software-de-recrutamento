@@ -1,0 +1,16 @@
+2025-07-17 22:38:41,522 [INFO] Limpando dados processados antigos...
+2025-07-17 22:38:41,522 [INFO] Carregando dados brutos...
+2025-07-17 22:38:41,806 [INFO] prospects.json carregado com 53759 registros.
+2025-07-17 22:38:47,461 [INFO] applicants.json carregado com 42482 registros.
+2025-07-17 22:38:47,927 [INFO] vagas.json carregado com 14081 registros.
+2025-07-17 22:38:47,944 [INFO] Pré-processando dados...
+2025-07-17 22:38:47,944 [INFO] Iniciando pré-processamento dos dados
+2025-07-17 22:38:48,010 [INFO] Iniciando pré-processamento dos dados
+2025-07-17 22:39:14,893 [INFO] Texto limpo na coluna: cv_pt
+2025-07-17 22:39:14,956 [INFO] Texto limpo na coluna: cv_en
+2025-07-17 22:39:15,084 [INFO] Iniciando pré-processamento dos dados
+2025-07-17 22:39:15,178 [INFO] Salvando dados processados...
+2025-07-17 22:39:15,448 [INFO] Dados salvos em 'data/processed\prospects_processed.csv'
+2025-07-17 22:39:18,110 [INFO] Dados salvos em 'data/processed\applicants_processed.csv'
+2025-07-17 22:39:18,585 [INFO] Dados salvos em 'data/processed\vagas_processed.csv'
+2025-07-17 22:39:18,585 [INFO] Pipeline concluída com sucesso!

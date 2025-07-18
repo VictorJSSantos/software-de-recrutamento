@@ -5,3 +5,8 @@ __pycache__/
 *.joblib
 .env
 .ipynb_checkpoints/
+
+
+# Ignorar arquivos pesados
+data/raw/*
+data/processed/*
