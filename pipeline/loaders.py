@@ -70,9 +70,16 @@ def carregar_vagas():
     for codigo_vaga, vaga_info in data.items():
         registro = {}
         registro["codigo_vaga"] = codigo_vaga
-        registro.update(vaga_info.get("informacoes_basicas", {}))
-        registro.update(vaga_info.get("perfil_vaga", {}))
-        registro.update(vaga_info.get("beneficios", {}))
+        
+        for k, v in vaga_info.get("informacoes_basicas", {}).items():
+            registro[f"infos_basicas.{k}"] = v
+        
+        for k, v in vaga_info.get("perfil_vaga", {}).items():
+            registro[f"perfil_vaga.{k}"] = v
+        
+        for k, v in vaga_info.get("beneficios", {}).items():
+            registro[f"beneficios.{k}"] = v
+        
         registros.append(registro)
 
     df = pd.DataFrame(registros)

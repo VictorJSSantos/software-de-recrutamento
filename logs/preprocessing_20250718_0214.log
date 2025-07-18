@@ -1,0 +1,23 @@
+2025-07-18 02:14:07,395 [INFO] Início do pipeline de pré-processamento
+2025-07-18 02:14:07,395 [INFO] Limpando diretório data/processed
+2025-07-18 02:14:07,419 [INFO] Carregando dados brutos...
+2025-07-18 02:14:08,045 [INFO] prospects.json carregado com 53759 registros.
+2025-07-18 02:14:13,555 [INFO] applicants.json carregado com 42482 registros.
+2025-07-18 02:14:14,000 [INFO] vagas.json carregado com 14081 registros.
+2025-07-18 02:14:14,018 [INFO] Aplicando pré-processamento...
+2025-07-18 02:14:14,018 [INFO] Iniciando pré-processamento dos dados (applicant)
+2025-07-18 02:14:14,234 [ERROR] Erro ao gerar embeddings (applicant): empty vocabulary; perhaps the documents only contain stop words
+2025-07-18 02:14:14,271 [INFO] Pré-processamento concluído para applicant.
+2025-07-18 02:14:14,271 [INFO] Iniciando pré-processamento dos dados (applicant)
+2025-07-18 02:14:35,285 [INFO] Texto limpo na coluna: cv_pt
+2025-07-18 02:14:35,333 [INFO] Texto limpo na coluna: cv_en
+2025-07-18 02:14:52,818 [INFO] Embeddings TF-IDF gerados com sucesso para applicant.
+2025-07-18 02:14:53,058 [INFO] Pré-processamento concluído para applicant.
+2025-07-18 02:14:53,114 [INFO] Iniciando pré-processamento dos dados (vaga)
+2025-07-18 02:14:56,409 [INFO] Embeddings TF-IDF gerados com sucesso para vaga.
+2025-07-18 02:14:56,523 [INFO] Pré-processamento concluído para vaga.
+2025-07-18 02:14:56,525 [INFO] Salvando arquivos processados em data/processed/
+2025-07-18 02:14:56,796 [INFO] Dados salvos em 'data/processed\prospects_processed.csv'
+2025-07-18 02:15:14,980 [INFO] Dados salvos em 'data/processed\applicants_processed.csv'
+2025-07-18 02:15:18,488 [INFO] Dados salvos em 'data/processed\vagas_processed.csv'
+2025-07-18 02:15:18,488 [INFO] Pipeline concluída com sucesso!
