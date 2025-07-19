@@ -14,8 +14,8 @@ Desenvolver um modelo de machine learning capaz de prever a compatibilidade entr
 
 ### 1. Clone o projeto
  
- git clone https://github.com/SEU_USUARIO/decision-ai-recruiter.git
- cd decision-ai-recruiter
+    git clone https://github.com/SEU_USUARIO/decision-ai-recruiter.git
+    cd decision-ai-recruiter
 
 ### 2. Crie o ambiente virtual
  
@@ -42,22 +42,23 @@ Desenvolver um modelo de machine learning capaz de prever a compatibilidade entr
 
 ###4. Execute a API
  
- uvicorn app.main:app --reload
+    uvicorn app.main:app --reload
 
 Acesse a documentação da API:
+    
     Swagger: http://localhost:8000/docs
     ReDoc: http://localhost:8000/redoc
 
 
 ## Rodar com Docker
 # Ambiente de Desenvolvimento
- docker build -f Dockerfile.dev -t decision-dev .
- docker run -p 8000:8000 decision-dev
+    docker build -f Dockerfile.dev -t decision-dev .
+    docker run -p 8000:8000 decision-dev
  
 # Ambiente de Produção
 
- docker build -t decision-api .
- docker run -p 8000:8000 decision-api
+    docker build -t decision-api .
+    docker run -p 8000:8000 decision-api
 
 
 ## Docker
@@ -119,17 +120,17 @@ decision-ai-recruiter/
 
 
 ### Requisitos Atendidos
- _Pipeline de dados estruturada
- _Geração de embeddings
- _Dataset com variável alvo match
- _Treinamento e avaliação do modelo
- _API com FastAPI (endpoint /predict)
- _Testes automatizados (pytest)
- _Dockerização (dev e prod)
+    _Pipeline de dados estruturada
+    _Geração de embeddings
+    _Dataset com variável alvo match
+    _Treinamento e avaliação do modelo
+    _API com FastAPI (endpoint /predict)
+    _Testes automatizados (pytest)
+    _Dockerização (dev e prod)
 
 
 ## Autores:
 
-Tatiana M. Haddad – – [@TatiHaddad](https://github.com/TatiHaddad)
-Victor Santos - [@VictorJSSantos](https://github.com/VictorJSSantos)
-Felipe Bizarria - [@felipebizarria](https://github.com/felipebizarria)
+    Tatiana M. Haddad – – [@TatiHaddad](https://github.com/TatiHaddad)
+    Victor Santos - [@VictorJSSantos](https://github.com/VictorJSSantos)
+    Felipe Bizarria - [@felipebizarria](https://github.com/felipebizarria)
