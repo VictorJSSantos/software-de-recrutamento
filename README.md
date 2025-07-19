@@ -131,6 +131,6 @@ decision-ai-recruiter/
 
 ## Autores:
 
-    Tatiana M. Haddad – – [@TatiHaddad](https://github.com/TatiHaddad)
-    Victor Santos - [@VictorJSSantos](https://github.com/VictorJSSantos)
-    Felipe Bizarria - [@felipebizarria](https://github.com/felipebizarria)
+   Tatiana M. Haddad – – [@TatiHaddad](https://github.com/TatiHaddad)
+   Victor Santos - [@VictorJSSantos](https://github.com/VictorJSSantos)
+   Felipe Bizarria - [@felipebizarria](https://github.com/felipebizarria)
