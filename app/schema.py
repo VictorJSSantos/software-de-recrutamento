@@ -1,9 +1,17 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
+from pydantic import BaseModel
 
-class MatchInput(BaseModel):
-    features: List[float] = Field(..., example=[0.23, 0.56, 0.78, 0.12])
+class VagaInput(BaseModel):
+    titulo: str
+    descricao: str
 
-class MatchOutput(BaseModel):
-    prediction: int = Field(..., example=1)
-    probability: float = Field(..., example=0.89)
+class CandidatoInput(BaseModel):
+    nome: str
+    resumo: str
+
+class MatchRequest(BaseModel):
+    vaga: VagaInput
+    candidato: CandidatoInput
+
+class MatchResponse(BaseModel):
+    match: bool
+    probabilidade: float

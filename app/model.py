@@ -1,26 +1,32 @@
-import os
 import joblib
-import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+import os
+import numpy as np
 
+# Carregar modelo e vetorizador
 MODEL_PATH = "models/modelo_match.pkl"
+VECTORIZER_PATH = "models/vectorizer.pkl"
 
-# Carrega o modelo salvo do disco
-def carregar_modelo():
-    if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(f"Modelo não encontrado em {MODEL_PATH}. Treine o modelo primeiro.")
-    return joblib.load(MODEL_PATH)
+model = joblib.load(MODEL_PATH)
+vectorizer = joblib.load(VECTORIZER_PATH)
 
-# Realiza a predição com o modelo carregado
-def prever(modelo, dados: pd.DataFrame):
-    if not isinstance(dados, pd.DataFrame):
-        raise ValueError("Os dados de entrada devem ser um DataFrame do pandas.")
-    
-    # Garante que não tem colunas extras como id_candidato ou id_vaga
-    colunas_para_remover = [col for col in ["id_candidato", "id_vaga", "match"] if col in dados.columns]
-    dados = dados.drop(columns=colunas_para_remover, errors="ignore")
-    
-    # Faz a predição
-    predicoes = modelo.predict(dados)
-    probabilidades = modelo.predict_proba(dados)[:, 1]  # Probabilidade da classe 1 (match)
-    
-    return predicoes.tolist(), probabilidades.tolist()
+def preprocess_text(text):
+    from unidecode import unidecode
+    import re
+    text = unidecode(text.lower())
+    text = re.sub(r"[^a-zA-Z0-9\s]", "", text)
+    return text.strip()
+
+def gerar_embedding(texto):
+    texto_limpo = preprocess_text(texto)
+    return vectorizer.transform([texto_limpo])
+
+def predict_match(vaga_texto, candidato_texto):
+    vaga_vec = gerar_embedding(vaga_texto)
+    candidato_vec = gerar_embedding(candidato_texto)
+
+    # Pode concatenar ou fazer média — aqui optamos pela média:
+    features = (vaga_vec + candidato_vec) / 2
+    prob = model.predict_proba(features)[0][1]
+    match = prob >= 0.5
+    return match, float(prob)
