@@ -19,13 +19,16 @@ Desenvolver um modelo de machine learning capaz de prever a compatibilidade entr
 
 ### 2. Crie o ambiente virtual
  
- python -m venv venv
- source venv/bin/activate # Linux/macOS
- venv\Scripts\activate    # Windows
+    python -m venv venv
+ # Para Linux/macOS: 
+    source venv/bin/activate
 
+ # Para Windows: 
+    venv/Scripts/activate
+    
 
-###3. Instale as dependências:
- pip install -r requirements.txt
+### 3. Instale as dependências:
+    pip install -r requirements.txt
 
 # Requisitos:
     Python 3.12
