@@ -103,7 +103,7 @@ COPY requirements_v2.txt ./
 COPY app ./app
 
 # Instalar dependências
-RUN pip install --upgrade pip && pip install -r requirements_v2.txt
+RUN pip install --upgrade pip && pip install -r requirements-prod.txt
 
 EXPOSE 8000
 
