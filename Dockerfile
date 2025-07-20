@@ -99,7 +99,7 @@ WORKDIR /app
 COPY --from=downloader /stage/models/ ./models/
 
 # Copiar só os arquivos da aplicação (sem os .pkl nem o repositório clonado)
-COPY requirements_v2.txt ./
+COPY requirements-prod.txt ./
 COPY app ./app
 
 # Instalar dependências
