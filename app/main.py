@@ -7,7 +7,7 @@ from app.schema import MatchRequest, MatchResponse
 from app.model import predict_match
 
 
-app = FastAPI()
+app = FastAPI(root_path="/api")
 Instrumentator().instrument(app).expose(app)
 REQUEST_TIME = Summary("request_processing_seconds", "Time spent processing request")
 
