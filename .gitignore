@@ -1,12 +1,14 @@
 venv/
 __pycache__/
 *.pyc
-*.pkl
+# *.pkl
 *.joblib
 .env
 .ipynb_checkpoints/
-
+!models/modelo_match.pkl
+!models/vectorizer.pkl
 
 # Ignorar arquivos pesados
 data/raw/*
 data/processed/*
+grafana-data/

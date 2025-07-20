@@ -7,3 +7,15 @@ venv/
 .git/
 tests/
 notebooks/
+*.pkl
+
+__tests__/
+*.ipynb_checkpoints/
+*.sqlite3
+*.db
+*.coverage
+.coverage*
+.tox/
+htmlcov/
+dist/
+build/
