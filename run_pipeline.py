@@ -8,10 +8,15 @@ from models.train_model import treinar_modelo
 import pandas as pd
 
 # Configura logger simples
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 
 def executar_pipeline_completa():
-    logging.info("Iniciando pipeline completa: preprocessamento -> geração de dataset -> treinamento")
+    logging.info(
+        "Iniciando pipeline completa: preprocessamento -> geração de dataset -> treinamento"
+    )
 
     # 1. Pré-processamento e geração dos embeddings
     logging.info("Etapa 1: Pré-processamento")
@@ -24,7 +29,7 @@ def executar_pipeline_completa():
         vagas_path="data/processed/vagas_processed.csv",
         prospect_path="data/processed/prospects_processed.csv",
         output_path="data/processed/dataset_final.csv",
-        negatives_ratio=1
+        negatives_ratio=1,
     )
 
     # 3. Treinamento do modelo
@@ -32,7 +37,8 @@ def executar_pipeline_completa():
     df = pd.read_csv("data/processed/dataset_final.csv")
     treinar_modelo(df)
 
-    logging.info(" Pipeline completa finalizada com sucesso!")
+    logging.info("Pipeline completa finalizada com sucesso!")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Executa todas as etapas da pipeline")
