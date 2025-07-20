@@ -1,0 +1,9 @@
+2025-07-20 00:30:11,223 - INFO - Requisição POST /predict recebida.
+2025-07-20 00:30:11,223 - INFO - Dados recebidos: Candidato='Especialista em análise de dados com experiência e...', Vaga='Vaga para cientista de dados com conhecimento em P...'
+2025-07-20 00:30:11,286 - INFO - Resultado da predição: {'match': 0, 'similaridade': 0.0, 'probabilidade': 0.1858}
+2025-07-20 00:30:29,606 - INFO - Requisição POST /predict recebida.
+2025-07-20 00:30:29,607 - INFO - Dados recebidos: Candidato='Cientista de dados com experiência em Python e SQL...', Vaga='Vaga para cientista de dados com conhecimento em P...'
+2025-07-20 00:30:29,646 - INFO - Resultado da predição: {'match': 0, 'similaridade': 0.0, 'probabilidade': 0.1858}
+2025-07-20 00:30:43,355 - INFO - Requisição POST /predict recebida.
+2025-07-20 00:30:43,355 - INFO - Dados recebidos: Candidato='cientista de dados com experiência em Python e SQL...', Vaga='Vaga para cientista de dados com conhecimento em P...'
+2025-07-20 00:30:43,398 - INFO - Resultado da predição: {'match': 0, 'similaridade': 0.0, 'probabilidade': 0.1858}
