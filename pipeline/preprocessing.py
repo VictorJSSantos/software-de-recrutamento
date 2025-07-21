@@ -22,8 +22,9 @@ def gerar_embedding(df, coluna_texto, max_features=300, prefixo="embedding"):
     return pd.DataFrame(X.toarray(), columns=[f'{prefixo}_{i}' for i in range(X.shape[1])])
 
 # Função principal de pré-processamento (tipo='applicant' ou 'vaga')
-def preprocessar_dados(df, tipo='applicant'):
-    logging.info(f"Iniciando pré-processamento dos dados ({tipo})")
+def preprocessar_dados(df, tipo='applicant', logger=None):
+    logger = logger or logging.getLogger(__name__)
+    logger.info(f"/pipeline/preprocessing.py - Iniciando pré-processamento dos dados ({tipo})")
     df = df.copy()
 
     # Colunas textuais comuns para limpeza
@@ -34,7 +35,7 @@ def preprocessar_dados(df, tipo='applicant'):
     for col in colunas_texto:
         if col in df.columns:
             df[col] = df[col].apply(limpar_texto)
-            logging.info(f"Texto limpo na coluna: {col}")
+            logger.info(f"/pipeline/preprocessing.py - Texto limpo na coluna: {col}")
 
     # Feature numérica: número de palavras em 'respostas'
     if "respostas" in df.columns:
@@ -47,7 +48,7 @@ def preprocessar_dados(df, tipo='applicant'):
     if nivel_col in df.columns:
         le = LabelEncoder()
         df["nivel_encoded"] = le.fit_transform(df[nivel_col].astype(str))
-        logging.info(f"LabelEncoder aplicado na coluna '{nivel_col}' ({tipo}).")
+        logger.info(f"/pipeline/preprocessing.py - LabelEncoder aplicado na coluna '{nivel_col}' ({tipo}).")
 
     # Texto unificado por tipo
     df["texto_unificado"] = ""
@@ -66,7 +67,7 @@ def preprocessar_dados(df, tipo='applicant'):
             "perfil_vaga.nivel_academico"
         ]
     else:
-        logging.warning(f"Tipo '{tipo}' desconhecido.")
+        logger.warning(f"Tipo '{tipo}' desconhecido.")
         colunas_unificadas = []
 
     for col in colunas_unificadas:
@@ -79,10 +80,18 @@ def preprocessar_dados(df, tipo='applicant'):
     try:
         embeddings = gerar_embedding(df, "texto_unificado", prefixo="embedding")
         df = pd.concat([df.reset_index(drop=True), embeddings.reset_index(drop=True)], axis=1)
-        logging.info(f"Embeddings TF-IDF gerados com sucesso para {tipo}.")
+        logger.info(f"/pipeline/preprocessing.py - Embeddings TF-IDF gerados com sucesso para {tipo}.")
     except Exception as e:
-        logging.error(f"Erro ao gerar embeddings ({tipo}): {e}")
+        logger.error(f"/pipeline/preprocessing.py - Erro ao gerar embeddings ({tipo}): {e}")
 
     df.fillna("", inplace=True)
-    logging.info(f"Pré-processamento concluído para {tipo}.")
+    logger.info(f"/pipeline/preprocessing.py - Pré-processamento concluído para {tipo}.")
     return df
+
+
+    
+# Pré-processa uma única string de entrada (como a descrição de candidato ou vaga).
+def preprocess_text(texto: str) -> str:
+    
+    
+    return limpar_texto(texto)

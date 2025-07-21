@@ -12,49 +12,51 @@ def garantir_diretorios():
     os.makedirs("data/processed", exist_ok=True)
 
 def main():
+    # Garante a estrutura de diretórios necessária
     garantir_diretorios()
 
+    # Cria log detalhado com timestamp por execução
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
     log_path = f"logs/preprocessing_{timestamp}.log"
     configurar_logging(log_path)
 
     try:
-        logging.info("Início do pipeline de pré-processamento")
+        logging.info(" Início do pipeline de pré-processamento")
 
-        # Limpa arquivos processados antigos
-        logging.info("Limpando diretório data/processed")
+        # Limpeza dos arquivos processados antigos
+        logging.info(" Limpando diretório data/processed")
         limpar_diretorio("data/processed")
 
-        # Carrega os dados
-        logging.info("Carregando dados brutos...")
+        # Carregamento dos dados
+        logging.info(" Carregando dados brutos...")
         df_prospects = carregar_prospects()
         df_applicants = carregar_applicants()
         df_vagas = carregar_vagas()
 
-        # Verifica se foram carregados corretamente
+        # Validação dos carregamentos
         for nome, df in zip(
             ["prospects", "applicants", "vagas"],
             [df_prospects, df_applicants, df_vagas]
         ):
             if df.empty:
-                logging.warning(f"Atenção: O DataFrame '{nome}' está vazio.")
+                logging.warning(f" Atenção: O DataFrame '{nome}' está vazio.")
 
-        # Pré-processa os dados
-        logging.info("Aplicando pré-processamento...")
+        # Pré-processamento
+        logging.info(" Aplicando pré-processamento...")
         df_prospects = preprocessar_dados(df_prospects)
         df_applicants = preprocessar_dados(df_applicants, tipo='applicant')
         df_vagas = preprocessar_dados(df_vagas, tipo='vaga')
 
-        # Salva os resultados
-        logging.info("Salvando arquivos processados em data/processed/")
+        # Salvamento dos dados processados
+        logging.info(" Salvando arquivos processados em data/processed/")
         salvar_df(df_prospects, "prospects_processed.csv")
         salvar_df(df_applicants, "applicants_processed.csv")
         salvar_df(df_vagas, "vagas_processed.csv")
 
-        logging.info("Pipeline concluída com sucesso!")
+        logging.info(" Pipeline de pré-processamento finalizado com sucesso!")
 
     except Exception as e:
-        logging.critical(f"Erro fatal na execução: {e}", exc_info=True)
+        logging.critical(f" Erro fatal na execução: {e}", exc_info=True)
 
 if __name__ == "__main__":
     main()

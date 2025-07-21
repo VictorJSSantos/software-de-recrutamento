@@ -1,0 +1,26 @@
+2025-07-20 19:36:28,358 - INFO - tests/run_test_train_model.py - Iniciando teste do treinamento do modelo preditivo
+2025-07-20 19:36:28,358 - INFO - tests/run_test_train_model.py - Testa se o modelo treina com o dataset real sem erros e salva o arquivo.
+2025-07-20 19:36:28,419 - INFO - tests/run_test_train_model.py -Garante que o modelo ainda não existe antes do teste
+2025-07-20 19:36:28,422 - INFO - tests/run_test_train_model.py - Chama o treinamento do modelo preditivo
+2025-07-20 19:36:28,423 - INFO - /models/train_model.py - Iniciando treinamento do modelo preditivo de match.
+2025-07-20 19:36:28,461 - INFO - /models/train_model.py - Registros recebidos: 98830
+2025-07-20 19:36:28,501 - INFO - /models/train_model.py - Divisão em treino (79064) e validação (19766)
+2025-07-20 19:36:28,501 - INFO - /models/train_model.py - Iniciando GridSearchCV com 3 folds...
+2025-07-20 19:39:46,776 - INFO - /models/train_model.py - Melhores hiperparâmetros: {'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 200}
+2025-07-20 19:39:47,184 - INFO - /models/train_model.py - Acurácia: 0.5937
+2025-07-20 19:39:47,184 - INFO - /models/train_model.py - ROC AUC: 0.6316
+2025-07-20 19:39:47,292 - INFO - /models/train_model.py - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.71      0.42      0.53     10752
+           1       0.54      0.80      0.64      9014
+
+    accuracy                           0.59     19766
+   macro avg       0.63      0.61      0.59     19766
+weighted avg       0.63      0.59      0.58     19766
+
+2025-07-20 19:39:47,635 - INFO - /models/train_model.py - Modelo salvo em: models/modelo_match.pkl
+2025-07-20 19:39:47,635 - INFO - /models/train_model.py - Treinamento finalizado em 199.21 segundos
+2025-07-20 19:39:47,636 - INFO - /models/train_model.py - Log completo salvo em: /logs/
+2025-07-20 19:39:47,647 - INFO - tests/run_test_train_model.py - Treinamento finalizado com sucesso
+2025-07-20 19:39:47,647 - INFO - tests/run_test_train_model.py - Valida se o modelo foi salvo com sucesso
