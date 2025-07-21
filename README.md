@@ -61,6 +61,11 @@ Este projeto pode ser executado de três formas principais:
     cd software-de-recrutamento
 ```
 
+ 
+    git clone https://github.com/SEU_USUARIO/decision-ai-recruiter.git
+    cd decision-ai-recruiter
+
+
 ### 2. Crie o ambiente virtual
 ```bash 
     python -m venv venv
@@ -86,7 +91,9 @@ Este projeto pode ser executado de três formas principais:
     Docker + Docker Compose
     Pip
 
-
+###4. Execute a API
+ 
+    uvicorn app.main:app --reload
 
 
 ###4. Execute a API
@@ -94,6 +101,7 @@ Este projeto pode ser executado de três formas principais:
     uvicorn app.main:app --reload
 ```
 Acesse a documentação da API:
+
  ```bash   
     Swagger: http://localhost:8000/docs
     ReDoc: http://localhost:8000/redoc
@@ -307,8 +315,6 @@ decision-ai-recruiter/
     _ Containerização com Docker
     _ Deploy na Produtivo Nuvem
     _ Monitoramento contínuo com logs e Streamlit e Grafana + Prometheus
-
-
 
 
 ## Autores:
