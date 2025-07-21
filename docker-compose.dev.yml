@@ -5,10 +5,58 @@ services:
       dockerfile: Dockerfile.dev
     container_name: decision-dev
     ports:
-      - "8001:8000"  # Porta local 8001 redireciona para 8000 no container
+      - "8001:8000"  
     volumes:
-      - .:/app  # Sincroniza o diretório atual com o container
-      - ./models:/app/models  
+      - .:/app                
     env_file:
       - .env.dev
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - monitor-net
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitor-net
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin 
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_ROOT_URL=http://localhost/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=false
+    depends_on:
+      - prometheus
+    networks:
+      - monitor-net
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+      - grafana
+    networks:
+      - monitor-net
+
+networks:
+  monitor-net:
+    driver: bridge
+
+volumes:
+  grafana-storage:

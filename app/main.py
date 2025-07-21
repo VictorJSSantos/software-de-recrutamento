@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_client import Summary
 from app.schema import MatchRequest, MatchResponse
 from pipeline.preprocessing import preprocess_text
 from sklearn.metrics.pairwise import cosine_similarity
@@ -8,13 +10,16 @@ import datetime
 
 
 # Inicializa app
-app = FastAPI()
+app = FastAPI(root_path="/api") # Avaliar pós merge
+Instrumentator().instrument(app).expose(app)
+REQUEST_TIME = Summary("request_processing_seconds", "Time spent processing request")
 
 # Configura logging (opcional mas recomendado)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 @app.post("/predict", response_model=MatchResponse)
+@REQUEST_TIME.time()
 def predict(data: MatchRequest):
     try:
         # Verificar campos vazios

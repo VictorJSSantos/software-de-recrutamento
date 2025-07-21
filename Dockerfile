@@ -1,24 +1,19 @@
-# Dockerfile
-
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-COPY . .
-
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
-# Dockerfile
+# Dockerfile.dev
 
 FROM python:3.11-slim
 
+# Instalações básicas
+RUN apt-get update && apt-get install -y gcc
+
+# Diretório da aplicação
 WORKDIR /app
 
+# Copia dependências e instala
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# Copia todo o projeto
 COPY . .
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Executa a API com reload automático
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

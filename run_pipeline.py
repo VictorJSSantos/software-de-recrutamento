@@ -81,3 +81,4 @@ if __name__ == "__main__":
     # Configura o logger raiz para INFO — assim qualquer log sem logger explícito tb aparece no console
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     main()
+
