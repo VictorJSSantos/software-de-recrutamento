@@ -4,32 +4,35 @@ import logging
 from sklearn.metrics.pairwise import cosine_similarity
 from tqdm import tqdm
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def load_embeddings(df, prefix='embedding_'):
     return df[[col for col in df.columns if col.startswith(prefix)]].values
 
-def build_dataset(applicants_path, vagas_path, prospect_path, output_path, negatives_ratio=1):
-    logging.info("Carregando dados...")
-    applicants_df = pd.read_csv(applicants_path)
-    vagas_df = pd.read_csv(vagas_path)
-    prospect_df = pd.read_csv(prospect_path)
+def build_dataset(applicants_df, vagas_df, prospect_df, output_path=None, logger=None, negatives_ratio=1):
+    logger = logger or logging.getLogger(__name__)    
+    logger.info("/pipeline/dataset_builder.py - Iniciando construção do dataset...")
 
     # Removendo duplicados
+    logger.info("/pipeline/dataset_builder.py - Remove duplicados applicants...")
     applicants_df = applicants_df.drop_duplicates(subset=['codigo_candidato'])
+    logger.info("/pipeline/dataset_builder.py - Remove duplicados vagas...")
     vagas_df = vagas_df.drop_duplicates(subset=['codigo_vaga'])
+    
 
     # Embeddings
+    logger.info("/pipeline/dataset_builder.py - Embeddings applicants...")
     applicant_embeddings = load_embeddings(applicants_df)
-    vaga_embeddings = load_embeddings(vagas_df)
+    logger.info("/pipeline/dataset_builder.py - Embeddings vagas...")
+    vaga_embeddings = load_embeddings(vagas_df) 
 
-    # Indexação por código
+    # Indexação por código para acesso rápido
+    logger.info("/pipeline/dataset_builder.py - Indexando applicants...")
     applicant_dict = applicants_df.set_index('codigo_candidato').to_dict(orient='index')
+    logger.info("/pipeline/dataset_builder.py - Indexando vagas...")
     vaga_dict = vagas_df.set_index('codigo_vaga').to_dict(orient='index')
 
-    logging.info("Iniciando geracao do dataset com matches reais...")
     dataset = []
-
     for _, row in tqdm(prospect_df.iterrows(), total=len(prospect_df)):
         cod_app = row['codigo']
         cod_vaga = row['codigo_vaga']
@@ -43,7 +46,8 @@ def build_dataset(applicants_path, vagas_path, prospect_path, output_path, negat
         similarity = cosine_similarity(emb_app, emb_vaga)[0][0]
         dataset.append({'codigo_candidato': cod_app, 'codigo_vaga': cod_vaga, 'similarity': similarity, 'match': 1})
 
-    logging.info(f"Gerando negativos com razao {negatives_ratio}...")
+    logger.info(f"/pipeline/dataset_builder.py - Gerando negativos com razao {negatives_ratio}...")
+
     all_applicants = list(applicant_dict.keys())
     all_vagas = list(vaga_dict.keys())
 
@@ -61,5 +65,9 @@ def build_dataset(applicants_path, vagas_path, prospect_path, output_path, negat
         attempts += 1
 
     df_final = pd.DataFrame(dataset)
-    df_final.to_csv(output_path, index=False)
-    logging.info(f"Dataset final salvo com {df_final.shape[0]} registros em {output_path}")
+
+    if output_path:
+        df_final.to_csv(output_path, index=False)
+        logger.info(f"/pipeline/dataset_builder.py - Dataset final salvo com {df_final.shape[0]} registros em {output_path}")
+
+    return df_final

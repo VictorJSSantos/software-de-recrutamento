@@ -1,0 +1,4 @@
+2025-07-19 22:10:20,317 - INFO - run_pipeline.py - Iniciando pipeline de carregamento de dados brutos
+2025-07-19 22:10:26,107 - INFO - run_pipeline.py - applicants.json carregado com 42482 registros.
+2025-07-19 22:10:26,576 - INFO - run_pipeline.py - vagas.json carregado com 14081 registros.
+2025-07-19 22:10:26,806 - INFO - run_pipeline.py - prospects.json carregado com 53759 registros.

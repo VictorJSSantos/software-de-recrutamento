@@ -1,107 +1,92 @@
 import os
+import time
 import logging
-import joblib
-import pandas as pd
 from datetime import datetime
-from time import time
-from tqdm import tqdm
-from sklearn.model_selection import train_test_split, RandomizedSearchCV
+
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, roc_auc_score, accuracy_score
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import classification_report, accuracy_score, roc_auc_score
+import joblib
 
 # Caminhos
 MODEL_PATH = "models/modelo_match.pkl"
-VECTORIZER_PATH = "models/vectorizer.pkl"
-DATA_PATH = "data/processed/dataset_final.csv"
+DATASET_PATH = "data/processed/dataset_final.csv"
+LOGS_DIR = "logs"
+os.makedirs(LOGS_DIR, exist_ok=True)
 
-# Log com timestamp
-log_dir = "logs"
-os.makedirs(log_dir, exist_ok=True)
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
-log_filename = f"train_model_{timestamp}.log"
-log_path = os.path.join(log_dir, log_filename)
 
-# Logging terminal + arquivo
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler(log_path, mode='w', encoding='utf-8'),
-        logging.StreamHandler()
-    ]
-)
 
-def treinar_modelo(df: pd.DataFrame = None, return_model: bool = False):
-    start_time = time()
-    logging.info("Iniciando pipeline de treinamento...")
+def treinar_modelo(df: pd.DataFrame, return_model: bool = False, logger=None):
+    logger.info("/models/train_model.py - Iniciando treinamento do modelo preditivo de match.")
+    inicio = time.time()
 
-    if df is None:
-        logging.info(f"Lendo dataset: {DATA_PATH}")
-        df = pd.read_csv(DATA_PATH)
+    try:
+        if not os.path.exists(DATASET_PATH):
+            raise FileNotFoundError(f"Arquivo {DATASET_PATH} não encontrado.")
 
-    if 'descricao_completa' not in df.columns:
-        logging.error("Coluna 'descricao_completa' não encontrada no dataset.")
-        raise ValueError("Coluna 'descricao_completa' não encontrada no dataset.")
+        df = pd.read_csv(DATASET_PATH)
+        if df.empty:
+            raise ValueError("Dataset vazio. Abortando treinamento.")
 
-    X_text = df["descricao_completa"].fillna("")
-    y = df["match"]
+        if "match" not in df.columns or "similarity" not in df.columns:
+            raise ValueError("Colunas obrigatórias 'match' e/ou 'similarity' ausentes.")
 
-    logging.info("Vetorizando com TF-IDF...")
-    vectorizer = TfidfVectorizer(max_features=5000)
-    X = vectorizer.fit_transform(tqdm(X_text, desc="TF-IDF"))
+        X = df[["similarity"]]
+        y = df["match"]
 
-    logging.info("Dividindo em treino/teste...")
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, stratify=y, random_state=42
-    )
+        logger.info(f"/models/train_model.py - Registros recebidos: {len(df)}")
 
-    logging.info("Buscando melhores hiperparâmetros (RandomizedSearchCV)...")
-    param_dist = {
-        "n_estimators": [100, 200, 300],
-        "max_depth": [10, 20, 30, None],
-        "min_samples_split": [2, 5, 10],
-        "min_samples_leaf": [1, 2, 4]
-    }
+        X_train, X_val, y_train, y_val = train_test_split(
+            X, y, test_size=0.2, stratify=y, random_state=42
+        )
 
-    base_model = RandomForestClassifier(random_state=42, n_jobs=-1)
-    search = RandomizedSearchCV(
-        base_model,
-        param_distributions=param_dist,
-        n_iter=10,
-        scoring="roc_auc",
-        n_jobs=-1,
-        cv=3,
-        verbose=1,
-        random_state=42
-    )
+        logger.info(f"/models/train_model.py - Divisão em treino ({len(X_train)}) e validação ({len(X_val)})")
 
-    search.fit(X_train, y_train)
-    best_model = search.best_estimator_
+        modelo = RandomForestClassifier(random_state=42, n_jobs=-1)
 
-    logging.info(f"Melhor modelo encontrado: {search.best_params_}")
+        param_grid = {
+            "n_estimators": [100, 200],
+            "max_depth": [10, None],
+            "min_samples_split": [2, 5],
+        }
 
-    logging.info("Avaliando modelo no conjunto de teste...")
-    y_pred = best_model.predict(X_test)
-    y_prob = best_model.predict_proba(X_test)[:, 1]
+        logger.info("/models/train_model.py - Iniciando GridSearchCV com 3 folds...")
+        grid_search = GridSearchCV(
+            estimator=modelo,
+            param_grid=param_grid,
+            scoring="roc_auc",
+            cv=3,
+            verbose=1,
+            n_jobs=-1,
+        )
+        grid_search.fit(X_train, y_train)
 
-    acc = accuracy_score(y_test, y_pred)
-    roc_auc = roc_auc_score(y_test, y_prob)
+        best_model = grid_search.best_estimator_
+        logger.info(f"/models/train_model.py - Melhores hiperparâmetros: {grid_search.best_params_}")
 
-    logging.info(f"Acurácia: {acc:.4f}")
-    logging.info(f"ROC AUC: {roc_auc:.4f}")
-    logging.info("Classification Report:\n" + classification_report(y_test, y_pred))
+        y_pred = best_model.predict(X_val)
+        y_proba = best_model.predict_proba(X_val)[:, 1]
 
-    os.makedirs("models", exist_ok=True)
-    joblib.dump(best_model, MODEL_PATH)
-    joblib.dump(vectorizer, VECTORIZER_PATH)
+        acc = accuracy_score(y_val, y_pred)
+        roc = roc_auc_score(y_val, y_proba)
 
-    logging.info(f"Modelo salvo em: {MODEL_PATH}")
-    logging.info(f"Vetorizador salvo em: {VECTORIZER_PATH}")
+        logger.info(f"/models/train_model.py - Acurácia: {acc:.4f}")
+        logger.info(f"/models/train_model.py - ROC AUC: {roc:.4f}")
+        logger.info(f"/models/train_model.py - Classification Report:\n" + classification_report(y_val, y_pred))
 
-    tempo_total = time() - start_time
-    logging.info(f"Tempo total de execução: {tempo_total:.2f} segundos")
-    logging.info(f"Log salvo em: {log_path}")
+        os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+        joblib.dump(best_model, MODEL_PATH)
+        logger.info(f"/models/train_model.py - Modelo salvo em: {MODEL_PATH}")
 
-    if return_model:
-        return best_model, vectorizer, {"accuracy": acc, "roc_auc": roc_auc}
+        fim = time.time()
+        logger.info(f"/models/train_model.py - Treinamento finalizado em {fim - inicio:.2f} segundos")
+        logger.info(f"/models/train_model.py - Log completo salvo em: /logs/")
+        
+
+        if return_model:
+            return best_model
+
+    except Exception as e:
+        logger.critical(f"/models/train_model.py - Erro ao treinar o modelo: {e}", exc_info=True)
+        raise
