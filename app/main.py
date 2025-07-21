@@ -4,6 +4,8 @@ from pipeline.preprocessing import preprocess_text
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 import logging
+import datetime
+
 
 # Inicializa app
 app = FastAPI()
@@ -33,6 +35,21 @@ def predict(data: MatchRequest):
         # Similaridade cosseno
         sim = cosine_similarity(vectors[0], vectors[1])[0][0]
         match = int(sim > 0.5)  # Limiar pode ser ajustado
+
+        #No retorno da API
+        log_data = {
+            "timestamp": datetime.datetime.now().isoformat(),
+            "candidato": data.descricao_candidato[:100],
+            "vaga": data.descricao_vaga[:100],
+            "similaridade": round(sim, 2),
+            "match": match
+        }
+
+        timestamp_str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+
+        with open(f"logs/06_predictions_log_{timestamp_str}.csv", "a", encoding="utf-8") as f:
+            f.write(f"{log_data['timestamp']},{log_data['similaridade']},{log_data['match']}\n")
+
 
         return MatchResponse(match=match, similaridade=round(sim, 2))
 
