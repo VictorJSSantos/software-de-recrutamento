@@ -1,0 +1,4 @@
+2025-07-19 23:53:44,790 - INFO - Recebido payload: descricao_candidato='Especialista em análise de dados com experiência em Python e SQL' descricao_vaga='Vaga para cientista de dados com conhecimento em Python, machine learning e manipulação de dados'
+2025-07-19 23:53:45,525 - INFO - Resultado: {'match': 0, 'similaridade': 0.4}
+2025-07-19 23:54:00,542 - INFO - Recebido payload: descricao_candidato='Especialista em análise de dados com experiência em Python e SQL' descricao_vaga='Vaga para cientista de dados com conhecimento em Python, machine learning e manipulação de dados'
+2025-07-19 23:54:00,544 - INFO - Resultado: {'match': 0, 'similaridade': 0.4}
