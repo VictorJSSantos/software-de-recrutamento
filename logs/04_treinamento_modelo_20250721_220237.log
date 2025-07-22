@@ -1,0 +1,22 @@
+2025-07-21 22:02:37,169 - INFO - run_pipeline.py - Iniciando treinamento do modelo preditivo
+2025-07-21 22:02:37,172 - INFO - /models/train_model.py - Iniciando treinamento do modelo preditivo de match.
+2025-07-21 22:02:37,559 - INFO - /models/train_model.py - Registros recebidos: 98830
+2025-07-21 22:02:37,818 - INFO - /models/train_model.py - Divisão em treino (79064) e validação (19766)
+2025-07-21 22:02:37,831 - INFO - /models/train_model.py - Iniciando GridSearchCV com 3 folds...
+2025-07-21 22:09:12,070 - INFO - /models/train_model.py - Melhores hiperparâmetros: {'max_depth': 10, 'min_samples_split': 5, 'n_estimators': 200}
+2025-07-21 22:09:12,865 - INFO - /models/train_model.py - Acurácia: 0.5903
+2025-07-21 22:09:12,878 - INFO - /models/train_model.py - ROC AUC: 0.6295
+2025-07-21 22:09:13,070 - INFO - /models/train_model.py - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.70      0.43      0.53     10752
+           1       0.53      0.79      0.64      9014
+
+    accuracy                           0.59     19766
+   macro avg       0.62      0.61      0.58     19766
+weighted avg       0.63      0.59      0.58     19766
+
+2025-07-21 22:09:14,610 - INFO - /models/train_model.py - Modelo salvo em: models/modelo_match.pkl
+2025-07-21 22:09:14,612 - INFO - /models/train_model.py - Treinamento finalizado em 397.44 segundos
+2025-07-21 22:09:14,613 - INFO - /models/train_model.py - Log completo salvo em: /logs/
+2025-07-21 22:09:14,651 - INFO - run_pipeline.py - Treinamento finalizado com sucesso

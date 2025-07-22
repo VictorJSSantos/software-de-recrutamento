@@ -1,0 +1,14 @@
+2025-07-21 21:05:58,505 - INFO - run_pipeline.py - Iniciando etapa de pré-processamento
+2025-07-21 21:05:58,518 - INFO - /pipeline/preprocessing.py - Iniciando pré-processamento dos dados (applicant)
+2025-07-21 21:06:59,920 - INFO - /pipeline/preprocessing.py - Texto limpo na coluna: cv_pt
+2025-07-21 21:07:00,030 - INFO - /pipeline/preprocessing.py - Texto limpo na coluna: cv_en
+2025-07-21 21:07:42,233 - INFO - /pipeline/preprocessing.py - Embeddings TF-IDF gerados com sucesso para applicant.
+2025-07-21 21:07:43,071 - INFO - /pipeline/preprocessing.py - Pré-processamento concluído para applicant.
+2025-07-21 21:07:43,354 - INFO - /pipeline/preprocessing.py - Iniciando pré-processamento dos dados (vaga)
+2025-07-21 21:07:56,194 - INFO - /pipeline/preprocessing.py - Embeddings TF-IDF gerados com sucesso para vaga.
+2025-07-21 21:07:56,439 - INFO - /pipeline/preprocessing.py - Pré-processamento concluído para vaga.
+2025-07-21 21:07:56,462 - INFO - /pipeline/preprocessing.py - Iniciando pré-processamento dos dados (prospect)
+2025-07-21 21:07:56,528 - WARNING - Tipo 'prospect' desconhecido.
+2025-07-21 21:07:57,142 - ERROR - /pipeline/preprocessing.py - Erro ao gerar embeddings (prospect): empty vocabulary; perhaps the documents only contain stop words
+2025-07-21 21:07:57,227 - INFO - /pipeline/preprocessing.py - Pré-processamento concluído para prospect.
+2025-07-21 21:07:57,239 - INFO - run_pipeline.py - Pré-processamento concluído para todos os dados.

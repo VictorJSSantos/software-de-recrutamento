@@ -12,8 +12,11 @@ A empresa **Decision** enfrenta desafios crescentes para encontrar candidatos ad
 
 Criamos uma solução baseada em Inteligência Artificial, para ser usada em uma plataforma, capaz de:
 _ Analisar e comparar perfis de candidatos e descrição de vagas
+
 _ Calcular a compatibilidade (match) entre os perfis com base em embeddings semânticos
+
 _ Classificar automaticamente se um candidato é adequado para determinada vaga
+
 _ Monitorar a performance do modelo e possíveis drifts ao longo do tempo
 
 
@@ -56,25 +59,30 @@ Este projeto pode ser executado de três formas principais:
 
 
 ### 1. Clone o projeto
- ```bash
+  ```bash
     git clone https://github.com/VictorJSSantos/software-de-recrutamento.git
     cd software-de-recrutamento
-```
+  ```
+  
 
 ### 2. Crie o ambiente virtual
-```bash 
+   ```bash
     python -m venv venv
  # Para Linux/macOS: 
     source venv/bin/activate
 
  # Para Windows: 
     venv/Scripts/activate
-    ```
+
+  ```
+
 
 ### 3. Instale as dependências:
-   ```bash
+     ```bash
     pip install -r requirements.txt
-```
+    ```
+    ```bash
+     ```
 
 # Requisitos:
     Python 3.12
@@ -92,35 +100,38 @@ Este projeto pode ser executado de três formas principais:
 ###4. Execute a API
  ```bash
     uvicorn app.main:app --reload
-```
+ ```
+
 Acesse a documentação da API:
- ```bash   
+  ```bash 
     Swagger: http://localhost:8000/docs
     ReDoc: http://localhost:8000/redoc
-```
+ ```
+
 
 ### Previsão de Compatibilidade
     ### Endpoint: /predict
     Método: POST
 
         ### Request(JSON)
-```bash
+ ```bash
         {
         "descricao_candidato": "Desenvolvedor com experiência em Python, Django, APIs REST e SQL.",
         "descricao_vaga": "Buscamos engenheiro de software com domínio em Python, APIs RESTful e banco de dados relacional."
         }
 
-```
+ ```
 
 
         ### Response(JSON)
-```bash
+ ```bash
             {
             "similaridade": 0.8347,
             "match": true
             }
 
-```
+ ```
+
 
 ## Lógica de Similaridade e Match
 _ Utiliza sentence-transformers para gerar embeddings vetorias dos textos
@@ -208,7 +219,9 @@ As variáveis de ambiente estão em:
 
 ### Testes Automatizados
 ```bash
- pytest tests/
+$env:PYTHONPATH="."  # apenas para a sesão de teste
+pytest tests/
+
  ```
 
 
