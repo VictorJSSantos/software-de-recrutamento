@@ -1,40 +1,31 @@
-#### Adicionando NGINX para poder usar proxy reverso 
+# Etapa 1: Baixar modelos e preparar app
 FROM python:3.12-slim as downloader
 
 WORKDIR /stage
 
 RUN apt-get update && apt-get install -y git git-lfs && \
-    git lfs install && \
-    git clone https://huggingface.co/datasets/victormvll/software-de-recrutamento && \
+    git clone --depth 1 https://github.com/VictorJSSantos/software-de-recrutamento.git && \
     mkdir -p models && cp software-de-recrutamento/models/*.pkl models/ && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Etapa 2: Build final com o app e Nginx
+# Etapa 2: Imagem final de produção
 FROM python:3.12-slim
 
 WORKDIR /app
 
-# Instala dependências do sistema e Nginx
-RUN apt-get update && apt-get install -y nginx && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Copiar apenas os .pkl da etapa anterior
+# Copia os modelos da etapa anterior
 COPY --from=downloader /stage/models/ ./models/
 
-# Copiar app e requirements
-COPY requirements-prod.txt ./
+# Copia o app e dependências
+COPY requirements.txt ./
 COPY app ./app
 
-# Instalar dependências do Python
-RUN pip install --upgrade pip && pip install -r requirements-prod.txt
+# Instala apenas as dependências
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Copiar configuração customizada do Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expor portas do Nginx
+# Expor a porta do Uvicorn
 EXPOSE 8000
-EXPOSE 9090
 
-# Rodar Nginx e Uvicorn simultaneamente
-# CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000 & nginx -g 'daemon off;'"]
-CMD ["sh", "-c", "nginx && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+# Executar o app com Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -10,13 +10,14 @@ import datetime
 
 
 # Inicializa app
-app = FastAPI(root_path="/api") # Avaliar pós merge
+app = FastAPI()
 Instrumentator().instrument(app).expose(app)
 REQUEST_TIME = Summary("request_processing_seconds", "Time spent processing request")
 
 # Configura logging (opcional mas recomendado)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 @app.post("/predict", response_model=MatchResponse)
 @REQUEST_TIME.time()
@@ -26,7 +27,7 @@ def predict(data: MatchRequest):
         if not data.descricao_candidato.strip() or not data.descricao_vaga.strip():
             raise HTTPException(
                 status_code=400,
-                detail="Os campos 'descricao_candidato' e 'descricao_vaga' não podem estar vazios."
+                detail="Os campos 'descricao_candidato' e 'descricao_vaga' não podem estar vazios.",
             )
 
         # Pré-processar os textos
@@ -41,20 +42,23 @@ def predict(data: MatchRequest):
         sim = cosine_similarity(vectors[0], vectors[1])[0][0]
         match = int(sim > 0.5)  # Limiar pode ser ajustado
 
-        #No retorno da API
+        # No retorno da API
         log_data = {
             "timestamp": datetime.datetime.now().isoformat(),
             "candidato": data.descricao_candidato[:100],
             "vaga": data.descricao_vaga[:100],
             "similaridade": round(sim, 2),
-            "match": match
+            "match": match,
         }
 
         timestamp_str = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        with open(f"logs/06_predictions_log_{timestamp_str}.csv", "a", encoding="utf-8") as f:
-            f.write(f"{log_data['timestamp']},{log_data['similaridade']},{log_data['match']}\n")
-
+        with open(
+            f"logs/06_predictions_log_{timestamp_str}.csv", "a", encoding="utf-8"
+        ) as f:
+            f.write(
+                f"{log_data['timestamp']},{log_data['similaridade']},{log_data['match']}\n"
+            )
 
         return MatchResponse(match=match, similaridade=round(sim, 2))
 
@@ -66,5 +70,5 @@ def predict(data: MatchRequest):
         logger.exception("Erro interno durante a execução do endpoint /predict.")
         raise HTTPException(
             status_code=500,
-            detail="Erro interno na API. Verifique os logs para mais detalhes."
+            detail="Erro interno na API. Verifique os logs para mais detalhes.",
         )
